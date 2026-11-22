@@ -586,8 +586,8 @@ th.asc .sa,th.desc .sa{color:var(--violet)}
 .st-Completed,.p-ok{background:var(--green-bg);color:var(--ok-text)}
 .sdot.busy{color:var(--rose)}.sdot.busy::before{background:var(--rose)}
 .login .art{background:linear-gradient(145deg,#1E1450 0%,#4A1F8C 45%,#B8397A 100%)}
-.login .art::after{background:radial-gradient(circle,rgba(255,170,90,.38),transparent 70%)}
-.login .art::before{content:"";position:absolute;width:340px;height:340px;border-radius:50%;left:-110px;top:-100px;background:radial-gradient(circle,rgba(59,154,246,.4),transparent 70%)}
+.login .art::after{background:radial-gradient(circle,rgba(245,165,36,.32),transparent 70%)}
+.login .art::before{content:"";position:absolute;width:340px;height:340px;border-radius:50%;left:-110px;top:-100px;background:radial-gradient(circle,rgba(15,181,164,.4),transparent 70%)}
 .login .art .logo{background:rgba(255,255,255,.18)!important;box-shadow:none}
 .login .art p{color:#E3D9FF}
 .donutw .legend b{color:var(--text)}
@@ -639,6 +639,11 @@ th.asc .sa,th.desc .sa{color:var(--violet)}
 .angrid.an21>.card+.card .donutw,.an3 .donutw{flex-direction:column;align-items:center;gap:14px}
 .angrid.an21>.card+.card .legend,.an3 .legend{width:100%;min-width:0}
 .donutw svg{flex:none}
+:root{--sky:var(--violet);--sky-bg:var(--violet-bg);--green:var(--teal);--green-bg:var(--teal-bg);--coral:var(--rose);--coral-bg:var(--rose-bg);--grad2:var(--grad);
+ --ok:var(--teal);--ok-bg:var(--teal-bg);--ok-text:#0B7E73;--bad:var(--rose);--bad-bg:var(--rose-bg);--bad-text:#C2306C}
+[data-theme=dark]{--sky:var(--violet);--sky-bg:var(--violet-bg);--green:var(--teal);--green-bg:var(--teal-bg);--coral:var(--rose);--coral-bg:var(--rose-bg);
+ --ok:#2DD4BF;--ok-bg:var(--teal-bg);--ok-text:#5EE6D8;--bad:#FF6FA6;--bad-bg:var(--rose-bg);--bad-text:#FF9CC0}
+.toprow:nth-child(1) .rk{background:var(--amber-bg);color:#B57600}.toprow:nth-child(2) .rk{background:var(--violet-bg);color:var(--accent-text)}.toprow:nth-child(3) .rk{background:var(--rose-bg);color:#C2306C}
 </style>
 </head>
 <body>
@@ -1673,7 +1678,7 @@ function lineChart(pts,fmt){ /* pts:[{l,v,tip}] */
 document.addEventListener('mouseover',e=>{const g=e.target.closest?.('.chart .hv');if(!g)return;const c=g.closest('.chart'),t=c.querySelector('.ctip');t.innerHTML=g.dataset.tip;t.style.left=g.dataset.x+'%';t.style.top=g.dataset.y+'%';t.style.opacity=1});
 document.addEventListener('mouseout',e=>{const c=e.target.closest?.('.chart');if(c&&!c.contains(e.relatedTarget))c.querySelector('.ctip').style.opacity=0});
 document.addEventListener('click',e=>{const g=e.target.closest?.('.chart .hv');if(g)g.dispatchEvent(new MouseEvent('mouseover',{bubbles:true}))});
-function donut(items,total,fmt){const R=46,C=2*Math.PI*R,cols=['#7C5CFA','#F0508C','#0FB5A4','#F5A524','#3B9AF6','#2FBF71'];let off=0;
+function donut(items,total,fmt){const R=46,C=2*Math.PI*R,cols=['#7C5CFA','#F0508C','#0FB5A4','#F5A524','#B7A6FD','#F8A0C0'];let off=0;
  const segs=items.map((it,i)=>{const f=total?it.v/total:0,s=`<circle r="${R}" cx="60" cy="60" fill="none" stroke="${cols[i%cols.length]}" stroke-width="14" stroke-dasharray="${(f*C).toFixed(2)} ${(C-f*C).toFixed(2)}" stroke-dashoffset="${(-off*C).toFixed(2)}" transform="rotate(-90 60 60)"><title>${esc(it.n)}: ${fmt(it.v)}</title></circle>`;off+=f;return s}).join('');
  return `<div class="donutw"><svg width="140" height="140" viewBox="0 0 120 120" role="img" aria-label="Revenue by category"><circle r="${R}" cx="60" cy="60" fill="none" stroke="var(--bg2)" stroke-width="14"/>${segs}<text x="60" y="58" text-anchor="middle" style="font:700 14px var(--f1);fill:var(--text)">${fmt(total).replace(/\.00$/,'')}</text><text x="60" y="74" text-anchor="middle" style="font:500 9.5px var(--f2);fill:var(--muted)">30 days</text></svg>
  <div class="legend">${items.map((it,i)=>`<div><i style="background:${cols[i%cols.length]}"></i>${esc(it.n)}<b>${total?Math.round(it.v/total*100):0}%</b></div>`).join('')}</div></div>`}
@@ -1838,7 +1843,7 @@ A.kebab=(d,el)=>{const had=$('.kmenu');closePops();if(had&&had._for===el)return;
 /* =====================================================================
    Reports & analytics — visual overview (charts computed from live data)
    ===================================================================== */
-const PAL=['#7C5CFA','#F0508C','#0FB5A4','#F5A524','#3B9AF6','#2FBF71','#FF7A59','#8E8EA9'];
+const PAL=['#7C5CFA','#F0508C','#0FB5A4','#F5A524','#B7A6FD','#F8A0C0','#7FD8CE','#FAD08A'];
 S.ui.repView='analytics';
 const within=(d,a,z)=>!!d&&d>=a&&d<=z;
 const dayDiff=(a,z)=>Math.round((new Date(z+'T12:00')-new Date(a+'T12:00'))/864e5)+1;
@@ -1905,7 +1910,7 @@ function analytics(){
  const pay={};all.forEach(i=>i.payments.filter(p=>within(p.date,from,to)).forEach(p=>pay[p.method]=(pay[p.method]||0)+p.amt));
  const pays=Object.entries(pay).map(([n,v])=>({n,v})).sort((a,b)=>b.v-a.v);
  /* appointments mix */
- const stCol={Completed:'#0FB5A4',Confirmed:'#7C5CFA',Pending:'#F5A524',Cancelled:'#B4B1CC','No-show':'#F0506E'};
+ const stCol={Completed:'#0FB5A4',Confirmed:'#7C5CFA',Pending:'#F5A524',Cancelled:'#B4B1CC','No-show':'#F0508C'};
  const stItems=['Completed','Confirmed','Pending','Cancelled','No-show'].map(n=>({n,v:stc(n),color:stCol[n]})).filter(x=>x.v);
  const wd=[0,0,0,0,0,0,0],heat={};let hMax=0;
  ap.filter(a=>!inactive(a)).forEach(a=>{const d=(new Date(a.date+'T12:00').getDay()+6)%7,h=+a.time.slice(0,2);wd[d]++;heat[d+'_'+h]=(heat[d+'_'+h]||0)+1;hMax=Math.max(hMax,heat[d+'_'+h])});
@@ -1961,7 +1966,7 @@ function analytics(){
   <div class="card"><h3>${ic('heart')}Loyalty tiers</h3>${donut2(tiers,v=>String(v),String(S.customers.length),'customers')}</div>
   <div class="card"><h3>${ic('trend')}Top customers<span class="sub">by spend</span></h3>${topC.map((c,i)=>`<div class="toprow"><span class="rk">${i+1}</span><div class="bt"><b>${esc(cname(c[0]))}</b><small>${tierOf(cust(c[0])).name} · ${cur.filter(x=>x.custId==c[0]).length} visits</small></div><b>${money(c[1])}</b></div>`).join('')||empty('No customer sales in this period')}</div></div>
  <div class="angrid an12"><div class="card"><h3>${ic('box')}Top retail products</h3>${hbars(topProd.map((x,i)=>({...x,color:PAL[(i+3)%PAL.length]})))}</div>
-  <div class="card"><h3>${ic('alert')}Stock health</h3>${(()=>{const low=lowStock(),ok=S.products.length-low.length;return donut2([{n:'Healthy',v:ok,color:PAL[5]},{n:'Low stock',v:low.length,color:PAL[6]}].filter(x=>x.v),v=>String(v),String(S.products.length),'products')+(low.length?`<div style="margin-top:14px;display:flex;gap:6px;flex-wrap:wrap">${low.map(p=>`<span class="pill p-red">${esc(p.name)} · ${p.stock} left</span>`).join('')}</div>`:'')})()}</div></div>`}
+  <div class="card"><h3>${ic('alert')}Stock health</h3>${(()=>{const low=lowStock(),ok=S.products.length-low.length;return donut2([{n:'Healthy',v:ok,color:PAL[2]},{n:'Low stock',v:low.length,color:PAL[1]}].filter(x=>x.v),v=>String(v),String(S.products.length),'products')+(low.length?`<div style="margin-top:14px;display:flex;gap:6px;flex-wrap:wrap">${low.map(p=>`<span class="pill p-red">${esc(p.name)} · ${p.stock} left</span>`).join('')}</div>`:'')})()}</div></div>`}
 const _repTables=P.reports;
 P.reports=()=>{const u=S.ui,an=u.repView!=='tables',btn=`<div class="seg" role="group" aria-label="Report view"><button type="button" class="${an?'on':''}" data-a="repView" data-v="analytics">${ic('chart')} Analytics</button><button type="button" class="${an?'':'on'}" data-a="repView" data-v="tables">${ic('receipt')} Detailed tables</button></div>${an?`<button class="btn ghost" data-a="anCsv">${ic('down')}Export CSV</button>`:''}`;
  if(an)return head('Reports & analytics','Visual insights across revenue, appointments, staff and customers',btn)+analytics();
@@ -1973,7 +1978,7 @@ A.anCsv=()=>{const u=S.ui,{b}=anBuckets(u.repFrom,u.repTo),all=live(),q=v=>'"'+S
  dl('analytics-'+u.repFrom+'_to_'+u.repTo+'.csv',rows.map(r=>r.map(q).join(',')).join('\n'),'text/csv');toast('CSV downloaded')};
 
 /* ----- colourful avatars ----- */
-const AVC=[['#EEEAFF','#5A3CE0'],['#FFE7F0','#C2306C'],['#D9F5F1','#0B7E73'],['#FFF0D2','#955700'],['#E0EFFF','#1F6FC4'],['#DAF5E6','#12794A'],['#FFE8E0','#C2502F']];
+const AVC=[['#EEEAFF','#5A3CE0'],['#FFE7F0','#C2306C'],['#D9F5F1','#0B7E73'],['#FFF0D2','#955700']];
 function colorAvatars(root){(root||document).querySelectorAll('.av:not(.rose)').forEach(a=>{if(a.dataset.c)return;const t=a.textContent.trim();let h=0;for(const ch of t)h=(h*31+ch.charCodeAt(0))>>>0;const c=AVC[h%AVC.length];a.dataset.c=1;a.style.background=c[0];a.style.color=c[1]})}
 
 /* ---------- boot ---------- */
